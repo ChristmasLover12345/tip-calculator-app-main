@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'SpaceMono';
+    src: url(../public/fonts/SpaceMono-Bold.ttf);
+}
+
+body{
+    font-family: 'SpaceMono';
+}
