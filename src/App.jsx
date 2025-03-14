@@ -11,15 +11,21 @@ function App() {
   const [tipAmount, setTipAmount] = useState(0)
   const [total, setTotal] = useState(0)
 
+
+  const [errorMessage, setErrorMessage] = useState("")
+  const [borderClass, setBorderClass] = useState("");
+
   
 
 
   const calculateTip = () => {
     if (bill > 0 && tip >= 0 && people > 0) 
       {
-            setTipAmount(parseFloat(((bill * (tip / 100)) / people).toFixed(2)))
-            setTotal(parseFloat((bill / people).toFixed(2)))
+          setTipAmount(parseFloat(((bill * (tip / 100)) / people).toFixed(2)))
+          setTotal(parseFloat((bill / people).toFixed(2)))
           console.log("working on it...")
+          setErrorMessage("")
+          setBorderClass("");
       }
       else
       {
@@ -33,12 +39,30 @@ function App() {
       setPeople(0)
       setTipAmount(0)
       setTotal(0)
+      setErrorMessage("");
+      setBorderClass("");
     }
 
     useEffect(() => {
       calculateTip();
     }, [bill, tip, people]);
 
+
+    const handlePeopleChange = (e) => {
+      const value = parseFloat(e.target.value) || 0;
+      setPeople(value);
+  
+      if (value === 0)
+      {
+        setErrorMessage("Can't be zero");
+        setBorderClass("border-4 border-red-300"); 
+      }
+      else
+      {
+        setErrorMessage("");
+        setBorderClass(""); 
+      }
+    };
 
 
 useEffect(() => {
@@ -60,7 +84,7 @@ useEffect(() => {
           <p className="text-start self-start text-[#5e7a7d] mb-3 text-[18px] font-medium">Bill</p>
           <div className="w-full h-auto flex flex-row items-center bg-[#f4fafa] px-2 rounded-lg hover:border-4 hover:border-[#26c0ab] mb-2">
             <img src="../images/icon-dollar.svg" alt="a dollar sign"/>
-            <input value={bill} onChange={(e) => setBill(parseFloat(e.target.value) || 0)} type="text" placeholder="0" className=" text-end h-[60px] w-full text-[24px] font-bold bg-[#f4fafa] text-[#00494d] flex items-center justify-center" />
+            <input value={bill} onChange={(e) => setBill(parseFloat(e.target.value) || 0)} type="number" step="0.01" placeholder="0" className=" text-end h-[60px] w-full text-[24px] font-bold bg-[#f4fafa] text-[#00494d] flex items-center justify-center" />
           </div>
 
                       <p className="text-start self-start text-[#5e7a7d] mb-3 text-[18px] font-medium row-start-1">Select Tip %</p>
@@ -70,13 +94,19 @@ useEffect(() => {
               <TipBtnComponent text={15} tipSetter={setTip} switchCheck={tip} extraClass={"col-start-1 row-start-2 md:col-start-3 md:row-start-1"}/>
               <TipBtnComponent text={25} tipSetter={setTip} switchCheck={tip} extraClass={"col-start-2 row-start-2 md:col-start-1 md:row-start-2"}/>
               <TipBtnComponent text={50} tipSetter={setTip} switchCheck={tip} extraClass={"col-start-1 row-start-3 md:col-start-2 md:row-start-2"}/>
-              <input onChange={(e) => setTip(parseFloat(e.target.value) || 0)}  type="text" placeholder="Custom" className=" text-center h-[60px] w-[90%] text-[24px] font-bold bg-[#f4fafa] text-[#00494d] hover:border-4 hover:border-[#26c0ab] rounded-lg flex items-center justify-center col-start-2 row-start-3 md:col-start-3 md:row-start-2" />
+              <input onChange={(e) => setTip(parseFloat(e.target.value) || 0)} type="number" step="0.01" placeholder="Custom" className=" text-center h-[60px] w-[90%] text-[24px] font-bold bg-[#f4fafa] text-[#00494d] hover:border-4 hover:border-[#26c0ab] rounded-lg flex items-center justify-center col-start-2 row-start-3 md:col-start-3 md:row-start-2" />
             </div>
 
-            <p className="text-start self-start text-[#5e7a7d] mb-3 text-[18px] font-medium">Number of people</p>
-          <div className="w-full h-auto flex flex-row items-center bg-[#f4fafa] px-2 rounded-lg hover:border-4 hover:border-[#26c0ab] mb-2">
+
+
+            <div className="w-full justify-between flex flex-row items-center">
+              <p className="text-start self-start text-[#5e7a7d] mb-3 text-[18px] font-medium">Number of people</p>
+              <p className="mb-3 text-red-300 font-medium">{errorMessage}</p>
+
+            </div>
+          <div className={`w-full h-auto flex flex-row items-center bg-[#f4fafa] px-2 rounded-lg hover:border-4 hover:border-[#26c0ab] mb-2 ${borderClass}`}>
             <img src="../images/icon-person.svg" alt="a dollar sign"/>
-            <input value={people} onChange={(e) => setPeople(parseFloat(e.target.value) || 0)} type="text" placeholder="0" className=" text-end h-[60px] w-full text-[24px] font-bold bg-[#f4fafa] text-[#00494d] flex items-center justify-center" />
+            <input value={people} onChange={handlePeopleChange} type="text" placeholder="0" className=" text-end h-[60px] w-full text-[24px] font-bold bg-[#f4fafa] text-[#00494d] flex items-center justify-center" />
           </div>
           
           </div>
