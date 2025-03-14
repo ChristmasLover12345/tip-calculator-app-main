@@ -6,7 +6,6 @@ import TipBtnComponent from "./Components/TipBtnComponent"
 
 function App() {
   const [tip, setTip] = useState()
-  const [customTip, setCustomTip] = useState()
   const[bill, setBill] = useState()
   const[people, setPeople] = useState()
   const [tipAmount, setTipAmount] = useState(0)
@@ -30,7 +29,6 @@ function App() {
 
     const reset = () => {
       setTip(0)
-      
       setBill(0)
       setPeople(0)
       setTipAmount(0)
